@@ -23,18 +23,19 @@ kb = ( el.e / L ) * [ 4*el.I 2*el.I    0;
                       2*el.I 4*el.I    0;
 	                     0         0 el.a ];
 	  
-% Initial basic force  -- normal only in this version
+% Initial basic force
 w = lambda * el.q;
 
 mom = w(1) * L^2 / 12;
-s0  = [ mom -mom 0 ]';
+s0  = [ mom -mom -w(2)*L/2 ]';
 
 % Basic force
 s = kb * a * u(:,1) + s0;
 
-% Reactions for basic system  -- normal only in this version
+% Reactions for basic system
 shear = w(1) * L / 2 * [ -dx(2) dx(1) ];
-p0    = [ shear 0 shear 0 ]'; 
+axial = w(2)*L * [-dx(1) -dx(2)];
+p0    = [ shear+axial 0 shear+axial 0 ]'; 
 
 % Restoring force and stiffness matrix
 p = a' * s + p0;

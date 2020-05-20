@@ -22,11 +22,11 @@ kb = ( el.e / L ) * [ 4*el.I 2*el.I    0;
                       2*el.I 4*el.I    0;
 	                     0        0 el.a ];
 
-% Initial basic force  -- normal only in this version
+% Initial basic force
 w = lambda * el.q;
 
 mom = w(1) * L^2 / 12;
-s0  = [ mom -mom 0 ]';
+s0  = [ mom -mom -w(2)*L/2 ]';
 
 % Basic force
 s = kb * a * u(:,1) + s0;
@@ -34,9 +34,10 @@ s = kb * a * u(:,1) + s0;
 % Member forces
 shear  = ( s(1) + s(2) ) / L;
 shear0 = w(1) * L / 2;
+axial0 = w(2) * L;
 
 f    =  zeros(1,6);
-f(1:2) = s(3)  * [ -1 1 ]; 
+f(1:2) = s(3)  * [ -1 1 ] + axial0 * [-1 1 ]; 
 f(3:4) = shear * [ 1 -1 ] + shear0 * [ 1 1 ];
 f(5:6) = s(1:2);
 
